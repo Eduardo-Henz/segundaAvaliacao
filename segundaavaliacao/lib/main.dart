@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'resumo_pag.dart';
 
 void main() {
   runApp(PizzaApp());
@@ -21,9 +22,9 @@ class PedidoPage extends StatefulWidget {
 
 class _PedidoPageState extends State<PedidoPage> {
 
-  String tamanho = "Média";
-  bool borda = false;
-  String bebida = "Coca-Cola";
+  String tamanho = "";
+  String borda = "Nenhuma";
+  String bebida = "Nenhuma";
 
   double total = 0;
 
@@ -42,7 +43,7 @@ class _PedidoPageState extends State<PedidoPage> {
       total += 150;
     }
 
-    if (borda) {
+    if (borda != "Nenhuma") {
       total += 10;
     }
     if (bebida == "Coca-Cola") {
@@ -121,9 +122,55 @@ class _PedidoPageState extends State<PedidoPage> {
 
             SizedBox(height: 10),
 
-            CheckboxListTile(
-              title: Text("Borda recheada (+10)"),
+            Text(
+              "Escolha a borda:",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+             DropdownButton(
               value: borda,
+              isExpanded: true,
+
+              items: [
+
+                 DropdownMenuItem(
+                  child: Text("Nenhuma"),
+                  value: "Nenhuma",
+                ),
+
+                DropdownMenuItem(
+                  child: Text("Chocolate Preto"),
+                  value: "Chocolate Preto",
+                ),
+
+                DropdownMenuItem(
+                  child: Text("Chocolate Branco"),
+                  value: "Chocolate Branco",
+                ),
+
+                DropdownMenuItem(
+                  child: Text("Creme de Avelã"),
+                  value: "Creme de Avelã",
+                ),
+
+                DropdownMenuItem(
+                  child: Text("Catupiry"),
+                  value: "Catupiry",
+                ),
+
+                DropdownMenuItem(
+                  child: Text("Cheddar"),
+                  value: "Cheddar",
+                ),
+
+                DropdownMenuItem(
+                  child: Text("Cream Cheese"),
+                  value: "Cream Cheese",
+                ),
+              ],
 
               onChanged: (value) {
                 setState(() {
@@ -131,7 +178,6 @@ class _PedidoPageState extends State<PedidoPage> {
                 });
               },
             ),
-
             SizedBox(height: 10),
 
             Text(
@@ -147,6 +193,12 @@ class _PedidoPageState extends State<PedidoPage> {
               isExpanded: true,
 
               items: [
+
+                 DropdownMenuItem(
+                  child: Text("Nenhuma"),
+                  value: "Nenhuma",
+                ),
+
                 DropdownMenuItem(
                   child: Text("Coca-Cola 2L - RS:10,00"),
                   value: "Coca-Cola",
@@ -172,17 +224,33 @@ class _PedidoPageState extends State<PedidoPage> {
 
             SizedBox(height: 20),
 
-            Center(
-              child: ElevatedButton(
+      Center(
+      child: ElevatedButton(
 
-                onPressed: () {
+      onPressed: () {
 
-                  calcularTotal();
+        setState(() {
+          calcularTotal();
+        });
 
-                
-                },
+          Navigator.push(
 
-                child: Text("Finalizar Pedido"),
+            context,
+
+              MaterialPageRoute(
+
+                builder: (context) => ResumoPage(
+
+                tamanho: tamanho,
+                borda: borda,
+                bebida: bebida,
+                total: total,
+              ),
+            ),
+          );
+        },
+
+            child: Text("Finalizar Pedido"),
               ),
             ),
           ],
