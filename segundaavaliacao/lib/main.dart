@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'resumo_pag.dart';
+import 'login.dart';
 
 void main() {
   runApp(PizzaApp());
@@ -10,7 +11,7 @@ class PizzaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       /*debugShowCheckedModeBanner: false,*/
-      home: PedidoPage(),
+      home: LoginPage(),
     );
   }
 }
@@ -25,6 +26,7 @@ class _PedidoPageState extends State<PedidoPage> {
   String tamanho = "";
   String borda = "Nenhuma";
   String bebida = "Nenhuma";
+  String sabor = "Calabresa";  
 
   double total = 0;
 
@@ -179,6 +181,55 @@ class _PedidoPageState extends State<PedidoPage> {
               },
             ),
             SizedBox(height: 10),
+
+                    Text(
+            "Escolha o sabor:",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          DropdownButton(
+            value: sabor,
+            isExpanded: true,
+
+            items: [
+
+              DropdownMenuItem(
+                child: Text("Calabresa"),
+                value: "Calabresa",
+              ),
+
+              DropdownMenuItem(
+                child: Text("Frango com Catupiry"),
+                value: "Frango com Catupiry",
+              ),
+
+              DropdownMenuItem(
+                child: Text("4 Queijos"),
+                value: "4 Queijos",
+              ),
+
+              DropdownMenuItem(
+                child: Text("Portuguesa"),
+                value: "Portuguesa",
+              ),
+
+              DropdownMenuItem(
+                child: Text("Chocolate"),
+                value: "Chocolate",
+              ),
+            ],
+
+            onChanged: (value) {
+              setState(() {
+                sabor = value!;
+              });
+            },
+          ),
+
+          SizedBox(height: 10),
 
             Text(
               "Escolha a bebida:",
