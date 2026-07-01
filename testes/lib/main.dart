@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'resumo_pag.dart';
 import 'login.dart';
+import 'widgets.dart';
 
 void main() {
   runApp(PizzaApp());
@@ -10,7 +11,11 @@ class PizzaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,  
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.deepOrange,
+        useMaterial3: true,
+      ),
       home: LoginPage(),
     );
   }
@@ -26,40 +31,45 @@ class _PedidoPageState extends State<PedidoPage> {
   String tamanho = "";
   String borda = "Nenhuma";
   String bebida = "Nenhuma";
-  String sabor = "Calabresa";  
+  String sabor = "Calabresa";
 
   double total = 0;
 
-  calcularTotal() {
-    total = 0;
+  // Processamento continua aqui, dentro do StatefulWidget, porque o
+  // resultado (total) muda o estado da tela via setState.
+  void calcularTotal() {
+    double novoTotal = 0;
 
     if (tamanho == "Pequena") {
-      total += 40;
+      novoTotal += 40;
     }
 
     if (tamanho == "Média") {
-      total += 50;
+      novoTotal += 50;
     }
 
     if (tamanho == "Grande") {
-      total += 150;
+      novoTotal += 150;
     }
 
     if (borda != "Nenhuma") {
-      total += 10;
+      novoTotal += 10;
     }
     if (bebida == "Coca-Cola") {
-      total += 10;
+      novoTotal += 10;
     }
 
     if (bebida == "Guaraná") {
-      total += 12;
+      novoTotal += 12;
     }
 
     if (bebida == "Suco") {
-      total += 8;
+      novoTotal += 8;
     }
-    
+
+    setState(() {
+      total = novoTotal;
+    });
   }
 
   @override
@@ -78,13 +88,7 @@ class _PedidoPageState extends State<PedidoPage> {
 
           children: [
 
-            Text(
-              "Escolha o tamanho:",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            SectionTitle("Escolha o tamanho:"),
 
             RadioListTile(
               title: Text("Pequena - RS:40,00"),
@@ -95,6 +99,7 @@ class _PedidoPageState extends State<PedidoPage> {
                 setState(() {
                   tamanho = value!;
                 });
+                calcularTotal();
               },
             ),
 
@@ -107,6 +112,7 @@ class _PedidoPageState extends State<PedidoPage> {
                 setState(() {
                   tamanho = value!;
                 });
+                calcularTotal();
               },
             ),
 
@@ -119,18 +125,11 @@ class _PedidoPageState extends State<PedidoPage> {
                 setState(() {
                   tamanho = value!;
                 });
+                calcularTotal();
               },
             ),
 
-            SizedBox(height: 10),
-
-            Text(
-              "Escolha a borda:",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            SectionTitle("Escolha a borda:"),
 
              DropdownButton(
               value: borda,
@@ -178,17 +177,11 @@ class _PedidoPageState extends State<PedidoPage> {
                 setState(() {
                   borda = value!;
                 });
+                calcularTotal();
               },
             ),
-            SizedBox(height: 10),
 
-                    Text(
-            "Escolha o sabor:",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+            SectionTitle("Escolha o sabor:"),
 
           DropdownButton(
             value: sabor,
@@ -229,15 +222,7 @@ class _PedidoPageState extends State<PedidoPage> {
             },
           ),
 
-          SizedBox(height: 10),
-
-            Text(
-              "Escolha a bebida:",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            SectionTitle("Escolha a bebida:"),
 
             DropdownButton(
               value: bebida,
@@ -270,7 +255,27 @@ class _PedidoPageState extends State<PedidoPage> {
                 setState(() {
                   bebida = value!;
                 });
+                calcularTotal();
               },
+            ),
+
+            SizedBox(height: 10),
+
+            // O total é recalculado a cada escolha (setState acima) e essa
+            // troca de valor é animada com AnimatedSwitcher.
+            Center(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: Text(
+                  "Total: RS ${total.toStringAsFixed(2)}",
+                  key: ValueKey(total),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepOrange,
+                  ),
+                ),
+              ),
             ),
 
             SizedBox(height: 20),
@@ -280,11 +285,7 @@ class _PedidoPageState extends State<PedidoPage> {
 
       onPressed: () {
 
-        setState(() {
-          calcularTotal();
-        });
-
-          Navigator.push(
+        Navigator.push(
 
             context,
 
@@ -300,7 +301,7 @@ class _PedidoPageState extends State<PedidoPage> {
             ),
           );
         },
-          
+
             child: Text("Finalizar Pedido"),
               ),
             ),

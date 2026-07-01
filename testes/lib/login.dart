@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
-import 'promocoes.dart';
+import 'cardapio_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -31,10 +31,19 @@ class _LoginPageState extends State<LoginPage> {
 
           children: [
 
-            Icon(
-              Icons.local_pizza,
-              size: 100,
-              color: Colors.orange,
+            // Animação simples: o ícone "cresce" ao abrir a tela.
+            TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0, end: 1),
+              duration: const Duration(milliseconds: 700),
+              curve: Curves.elasticOut,
+              builder: (context, valor, child) {
+                return Transform.scale(scale: valor, child: child);
+              },
+              child: Icon(
+                Icons.local_pizza,
+                size: 100,
+                color: Colors.orange,
+              ),
             ),
 
             SizedBox(height: 20),
@@ -70,12 +79,27 @@ class _LoginPageState extends State<LoginPage> {
                   context,
 
                   MaterialPageRoute(
-                    builder: (context) => const PromocoesPage(),
+                    builder: (context) => PedidoPage(),
                   ),
                 );
               },
 
               child: Text("Entrar"),
+            ),
+
+            SizedBox(height: 10),
+
+            // Tela nova acessível a partir do login, sem precisar logar.
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CardapioPage(),
+                  ),
+                );
+              },
+              child: Text("Ver Cardápio"),
             ),
           ],
         ),
