@@ -30,37 +30,59 @@ class _PedidoPageState extends State<PedidoPage> {
 
   double total = 0;
 
-  calcularTotal() {
-    total = 0;
+  int quantidade = 1;
 
-    if (tamanho == "Pequena") {
-      total += 40;
-    }
+  TextEditingController cupomController = TextEditingController();
 
-    if (tamanho == "Média") {
-      total += 50;
-    }
+  double desconto = 0;
+  double entrega = 8;
 
-    if (tamanho == "Grande") {
-      total += 150;
-    }
+  void calcularTotal() {
 
-    if (borda != "Nenhuma") {
-      total += 10;
-    }
-    if (bebida == "Coca-Cola") {
-      total += 10;
-    }
+  total = 0;
 
-    if (bebida == "Guaraná") {
-      total += 12;
-    }
-
-    if (bebida == "Suco") {
-      total += 8;
-    }
-    
+  if (tamanho == "Pequena") {
+    total += 40;
   }
+
+  if (tamanho == "Média") {
+    total += 50;
+  }
+
+  if (tamanho == "Grande") {
+    total += 150;
+  }
+
+  if (borda != "Nenhuma") {
+    total += 10;
+  }
+
+  if (bebida == "Coca-Cola") {
+    total += 10;
+  }
+
+  if (bebida == "Guaraná") {
+    total += 12;
+  }
+
+  if (bebida == "Suco") {
+    total += 8;
+  }
+
+  total *= quantidade;
+
+  desconto = 0;
+
+  if (cupomController.text.toUpperCase() == "DESCONTO10") {
+    desconto = total * 0.10;
+  }
+
+  total -= desconto;
+
+  entrega = total >= 70 ? 0 : 8;
+
+  total += entrega;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +92,35 @@ class _PedidoPageState extends State<PedidoPage> {
         title: Text(" Dudu Pizzeria 🍕"),
       ),
 
-      body: Padding(
+      body: SingleChildScrollView(
+        child: Padding(
         padding: EdgeInsets.all(16),
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
+
+            Center(
+              child: Hero(
+                tag: "pizzaHero",
+                child: AnimatedRotation(
+                  turns: tamanho == "Grande"
+                        ? 1
+                       : tamanho == "Média"
+                       ? 0.5
+                       : 0,
+                  duration: const Duration(milliseconds: 500),
+                  child: const Icon(
+                    Icons.local_pizza,
+                    size: 140,
+                    color: Colors.deepOrange,
+                    ),
+                ),
+              ),
+            ),
+
+          const SizedBox(height: 20),
 
             Text(
               "Escolha o tamanho:",
@@ -229,6 +273,63 @@ class _PedidoPageState extends State<PedidoPage> {
             },
           ),
 
+
+          const SizedBox(height: 20),
+
+Text(
+  "Quantidade",
+  style: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+
+    IconButton(
+      onPressed: () {
+        if (quantidade > 1) {
+          setState(() {
+            quantidade--;
+          });
+        }
+      },
+      icon: Icon(Icons.remove_circle, color: Colors.red, size: 35),
+    ),
+
+         Text(
+           quantidade.toString(),
+           style: TextStyle(
+             fontSize: 24,
+             fontWeight: FontWeight.bold,
+           ),
+         ),
+
+         IconButton(
+           onPressed: () {
+             setState(() {
+               quantidade++;
+             });
+           },
+           icon: Icon(Icons.add_circle, color: Colors.green, size: 35),
+         ),
+       ],
+     ),
+
+     TextField(
+       controller: cupomController,
+       decoration: InputDecoration(
+         labelText: "Cupom de desconto",
+         hintText: "DESCONTO10",
+         border: OutlineInputBorder(),
+         prefixIcon: Icon(Icons.discount),
+       ),
+     ),
+
+
+
           SizedBox(height: 10),
 
             Text(
@@ -275,38 +376,127 @@ class _PedidoPageState extends State<PedidoPage> {
 
             SizedBox(height: 20),
 
-      Center(
-      child: ElevatedButton(
+        const SizedBox(height: 20),
 
-      onPressed: () {
+Center(
+  child: ElevatedButton.icon(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.orange,
+      foregroundColor: Colors.white,
+    ),
+    onPressed: () {
+      setState(() {
+        calcularTotal();
+      });
+    },
+    icon: const Icon(Icons.calculate),
+    label: const Text("Calcular Total"),
+  ),
+),
 
-        setState(() {
-          calcularTotal();
-        });
+const SizedBox(height: 20),
 
-          Navigator.push(
+Center(
+  child: Card(
+    elevation: 8,
+    color: Colors.orange.shade100,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(15),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
 
-            context,
+          Text(
+            "Quantidade: $quantidade",
+            style: const TextStyle(fontSize: 18),
+          ),
 
+          const SizedBox(height: 5),
+
+          Text(
+            "Entrega: R\$ ${entrega.toStringAsFixed(2)}",
+            style: const TextStyle(fontSize: 18),
+          ),
+
+          const SizedBox(height: 5),
+
+          Text(
+            "Desconto: R\$ ${desconto.toStringAsFixed(2)}",
+            style: const TextStyle(fontSize: 18),
+          ),
+
+          const Divider(),
+
+          Text(
+            "TOTAL",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+
+          Text(
+            "R\$ ${total.toStringAsFixed(2)}",
+            style: TextStyle(
+              color: Colors.deepOrange,
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+),
+
+          Center(
+      child: SizedBox(
+        width: double.infinity,
+        height: 55,
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepOrange,
+            foregroundColor: Colors.white,
+            elevation: 8,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          onPressed: () {
+
+            setState(() {
+              calcularTotal();
+            });
+
+            Navigator.push(
+              context,
               MaterialPageRoute(
-
                 builder: (context) => ResumoPage(
-
-                tamanho: tamanho,
-                borda: borda,
-                bebida: bebida,
-                total: total,
+                  tamanho: tamanho,
+                  borda: borda,
+                  bebida: bebida,
+                  total: total,
+                ),
               ),
+            );
+          },
+          icon: const Icon(Icons.shopping_cart_checkout),
+          label: const Text(
+            "Finalizar Pedido",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-          );
-        },
-          
-            child: Text("Finalizar Pedido"),
-              ),
-            ),
+          ),
+        ),
+      ),
+    ),
           ],
         ),
       ),
+    )
     );
   }
 }

@@ -117,42 +117,65 @@ class _ResumoPageState extends State<ResumoPage> {
             SizedBox(height: 30),
 
             Center(
-              child: ElevatedButton(
+  child: SizedBox(
+    width: double.infinity,
+    height: 55,
+    child: ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        elevation: 8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+      onPressed: () {
 
-                onPressed: () {
-
-                  showDialog(
-                    context: context,
-
-                    builder: (context) {
-
-                      return AlertDialog(
-
-                        title: Text("Pedido Confirmado"),
-
-                        content: Text(
-                          "Pagamento: $pagamento",
-                        ),
-
-                        actions: [
-
-                          TextButton(
-
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-
-                            child: Text("OK"),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-
-                child: Text("Confirmar Pagamento"),
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-            ),
+              title: const Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.green),
+                  SizedBox(width: 10),
+                  Text("Pedido Confirmado"),
+                ],
+              ),
+              content: Text(
+                "Pagamento: $pagamento\n\nSeu pedido foi recebido com sucesso! 🍕",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      icon: const Icon(Icons.payment),
+      label: const Text(
+        "Confirmar Pagamento",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  ),
+),
           ],
         ),
       ),
