@@ -1,33 +1,9 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'card_promocoes.dart';
 
 class PromocoesPage extends StatelessWidget {
   const PromocoesPage({super.key});
-
-  Widget cardPromocao(
-      String titulo, String descricao, IconData icone, Color cor) {
-    return Card(
-      elevation: 8,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: ListTile(
-        leading: Icon(
-          icone,
-          color: cor,
-          size: 40,
-        ),
-        title: Text(
-          titulo,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        subtitle: Text(descricao),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +31,7 @@ class PromocoesPage extends StatelessWidget {
 
               Hero(
                 tag: "pizzaHero",
-                child: Icon(
+                child: const Icon(
                   Icons.local_pizza,
                   size: 140,
                   color: Colors.white,
@@ -64,25 +40,25 @@ class PromocoesPage extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              cardPromocao(
-                "Terça da Pizza",
-                "Na compra de uma pizza grande ganhe refrigerante.",
-                Icons.local_offer,
-                Colors.green,
+              const CardPromocao(
+                titulo: "Terça da Pizza",
+                descricao: "Na compra de uma pizza grande ganhe refrigerante.",
+                icone: Icons.local_offer,
+                cor: Colors.green,
               ),
 
-              cardPromocao(
-                "Cupom",
-                "Use DESCONTO10 e ganhe 10% OFF.",
-                Icons.discount,
-                Colors.blue,
+              const CardPromocao(
+                titulo: "Cupom",
+                descricao: "Use DESCONTO10 e ganhe 10% OFF.",
+                icone: Icons.discount,
+                cor: Colors.blue,
               ),
 
-              cardPromocao(
-                "Entrega",
-                "Acima de R\$70 a entrega é grátis.",
-                Icons.delivery_dining,
-                Colors.red,
+              const CardPromocao(
+                titulo: "Entrega",
+                descricao: "Acima de R\$70 a entrega é grátis.",
+                icone: Icons.delivery_dining,
+                cor: Colors.red,
               ),
 
               const Spacer(),
@@ -90,10 +66,22 @@ class PromocoesPage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 height: 55,
-                child: ElevatedButton(
+                child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.deepOrange,
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  icon: const Icon(Icons.arrow_forward),
+                  label: const Text(
+                    "Continuar Pedido",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -103,15 +91,8 @@ class PromocoesPage extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text(
-                    "FAZER PEDIDO",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),

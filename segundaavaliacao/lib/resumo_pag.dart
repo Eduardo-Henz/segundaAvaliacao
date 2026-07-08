@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'acompanhamento.dart';
 
 class ResumoPage extends StatefulWidget {
 
@@ -151,7 +152,12 @@ class _ResumoPageState extends State<ResumoPage> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (_) => const AcompanhamentoPage(),
+  ),
+);
                   },
                   child: const Text(
                     "OK",
