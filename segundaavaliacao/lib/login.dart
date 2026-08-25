@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
+
 import 'promocoes.dart';
 
 class LoginPage extends StatefulWidget {
@@ -83,3 +83,5 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+
