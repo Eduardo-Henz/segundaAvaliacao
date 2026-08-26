@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'resumo_pag.dart';
-import 'login.dart';
+import 'splash.dart';
 
 void main() {
   runApp(PizzaApp());
@@ -10,8 +10,8 @@ class PizzaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,  
-      home: LoginPage(),
+      debugShowCheckedModeBanner: false,
+      home: const SplashPage(),
     );
   }
 }
@@ -478,6 +478,8 @@ Center(
                   tamanho: tamanho,
                   borda: borda,
                   bebida: bebida,
+                  sabor: sabor,
+                  quantidade: quantidade,
                   total: total,
                 ),
               ),

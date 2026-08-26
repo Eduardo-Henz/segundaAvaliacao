@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'promocoes.dart';
 
@@ -14,6 +15,11 @@ class _LoginPageState extends State<LoginPage> {
 
   TextEditingController senhaController =
       TextEditingController();
+
+  Future<void> salvarLogin(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +70,9 @@ class _LoginPageState extends State<LoginPage> {
 
             ElevatedButton(
 
-              onPressed: () {
+              onPressed: () async {
+
+                await salvarLogin(emailController.text);
 
                 Navigator.push(
                   context,
@@ -83,5 +91,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-
